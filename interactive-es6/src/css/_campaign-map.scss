@@ -1,0 +1,22 @@
+.campaign-map {
+  width: 50%;
+  float: left;
+}
+
+.cartogram__hex {
+    // transition: all 50ms ease-out;
+/*    fill: #767676;
+*/}
+
+.cartogram__hex--empty {
+    fill: #fff;
+    stroke: #767676;
+    fill-opacity: 1;
+}
+
+.cartogram__hexgroup {
+    stroke: #767676;
+    stroke-opacity: 0.8;
+    fill-opacity: 1;
+}
+

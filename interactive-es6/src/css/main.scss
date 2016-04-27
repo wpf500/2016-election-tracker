@@ -1,0 +1,80 @@
+@import "fonts";
+@import "palette";
+@import "mq";
+@import "variables";
+@import "general";
+@import "gu-aus";
+@import "campaign-map";
+@import "bar-graph";
+
+section {
+  clear: both;
+  margin: 20px 0;
+
+  h2 { 
+    font-weight: 500; 
+    text-align: center;
+  }
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.labor, .coalition {
+  float: left;
+  width: 50%;
+  clear: none;
+}
+
+#summaries {
+  h3 { 
+    text-align: center;
+    font-weight: 500; 
+    margin-bottom: 10px;
+  }
+
+  .profile {
+    height: 100px;
+  }
+
+  .summary-text { 
+    max-width: 300px;
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+  }
+
+  #summary-labor {
+    .summary-text { 
+      text-align: left;
+      float: left;
+    }
+    .profile {
+      float: left;
+      margin-left: 200px;
+    }
+  }
+  #summary-coalition {
+    .summary-text { 
+      text-align: right;
+      float: right;
+    }
+    .profile {
+      float: right;
+      margin-right: 200px;
+    }
+  }  
+}
+
+@media (min-width: 61.25em) {
+	.text {
+    margin-left: 10rem;
+    position: relative;
+	}
+} 
+
+@media (max-width: 38.75rem) {
+	.text {
+	  margin-left: 0; 
+	}  
+}  

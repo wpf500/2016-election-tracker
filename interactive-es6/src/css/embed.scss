@@ -1,0 +1,36 @@
+@import "fonts";
+
+html,
+body {
+    @include fs-bodyCopy(2);
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.interactive-embed {
+}
+
+@import "fonts";
+@import "palette";
+@import "mq";
+@import "variables";
+@import "general";
+@import "gu-aus";
+@import "campaign-map";
+@import "bar-graph";
+
+@media (min-width: 61.25em) {
+	.text {
+    margin-left: 10rem;
+    position: relative;
+	}
+} 
+
+@media (max-width: 38.75rem) {
+	.text {
+	  margin-left: 0; 
+	}  
+}  
+
+    
