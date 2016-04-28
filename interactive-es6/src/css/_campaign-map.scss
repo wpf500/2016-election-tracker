@@ -1,6 +1,14 @@
 .campaign-map {
   width: 50%;
   float: left;
+  position: relative;
+
+  .tooltip {
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+    font-size: 14pt;
+
+    h4 { font-weight: 500; }
+  }
 }
 
 .cartogram__hex {

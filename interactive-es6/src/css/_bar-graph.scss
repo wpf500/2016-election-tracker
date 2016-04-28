@@ -3,8 +3,32 @@
   height: 300px;
   box-sizing: border-box;
   padding: 20px;
+  color: #333;
 
   svg {
     text-align: center;
+
+    .graph-text {
+      font-size: 14px;
+      fill: #333;
+    }
+
+    .axis {
+      path {
+        fill: none;
+        stroke: #767676;
+        shape-rendering: crispEdges;
+      }
+      &.y .tick line {
+        fill: none;
+        stroke: #767676;
+        stroke-width: 1;
+      }
+      .tick text {
+        font-size: 13px;
+        font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+        text-transform: capitalize;
+      }
+    }
   }
 }

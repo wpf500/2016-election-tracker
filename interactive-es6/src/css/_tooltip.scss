@@ -1,0 +1,107 @@
+.tooltip {
+    min-width: 140px;
+    max-width: 220px;
+    padding: 5px;
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #ddd;
+    position: absolute;
+    box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.30);
+    pointer-events: none;
+}
+
+.tooltip h4 {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.tooltip p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    color: #000;
+}
+
+.tooltip__tap2expand {
+    font-style: italic;
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 6px;
+    &:before {
+        @include mq($until: tablet) {
+            content: 'More details »';
+            display: block;
+            color: #005689;
+            text-decoration: underline;
+        }
+        @include mq(desktop) {
+            content: 'Click for details';
+            color: #767676;
+            text-decoration: none;
+            margin-top: 4px;
+        }
+    }
+
+}
+
+.tooltip__blips {
+    font-size: 18px;
+    span { margin-right: 0; }
+}
+
+.tooltip__spout {
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+}
+
+.tooltip__spout.flush-left {
+    left: 6px;
+}
+
+.tooltip__spout.flush-right {
+    right: 16px;
+    left: initial;
+}
+
+.tooltip__spout:after,
+.tooltip__spout:before {
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.tooltip__spout:before { // outside
+    border-width: 9px;
+    margin-top: -8px;
+    margin-left: -1px;
+}
+
+.tooltip__spout:after { // inside
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+.tooltip--above {
+    margin-top: -25px;
+    .tooltip__spout {
+        margin-top: 8px;
+        top: 100%;
+        &:before { border-top-color: #ddd; }
+        &:after { border-top-color: rgba(255,255,255,0.9); }
+    }
+}
+
+.tooltip--below {
+    margin-top: 25px;
+    .tooltip__spout {
+        margin-top: -8px;
+        top: 0;
+        &:before { border-bottom-color: #ddd; margin-top: -10px; }
+        &:after { border-bottom-color: rgba(255,255,255,0.9); }
+    }
+}
