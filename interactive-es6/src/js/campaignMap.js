@@ -106,7 +106,7 @@ export class AUSCartogram {
         this.hexPaths
             .attr('fill', (d) => {
                 if (d.data) {
-                    if (d.data.values[0].status === "Marginal") {
+                    if (d.data.values[0].values[0].status === "Marginal") {
                         var texture = textures.lines()
                             .size(6)
                             .strokeWidth(1)
@@ -144,8 +144,7 @@ export class AUSCartogram {
                 .attr("class", "tooltip")
             this.tooltip = document.querySelector(`${this.el} .tooltip`)
         }
-
-        var msg = `${electorate.properties.electorate}: ${electorate.data.values.length} visits`
+        var msg = `${electorate.properties.electorate}: ${electorate.data.values.length} visits <em>${electorate.data.values[0].values[0].status} seat</em>`
 
         this.tooltip.innerHTML =
             '<span class="tooltip__spout"></span>' +

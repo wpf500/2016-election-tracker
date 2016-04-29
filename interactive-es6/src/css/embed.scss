@@ -19,18 +19,94 @@ body {
 @import "gu-aus";
 @import "campaign-map";
 @import "bar-graph";
+@import "campaign-table";
+@import "tooltip";
+@import "footable.min";
+
+section {
+  clear: both;
+  margin: 20px 0;
+
+  h2 { 
+    font-weight: 500; 
+    text-align: center;
+  }
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.labor, .coalition {
+  float: left;
+  width: 50%;
+  clear: none;
+}
+
+.toggle-mode {
+  text-align: center;
+  margin: 10px auto;
+  #toggle-promises {
+    clear: both;
+    font-size: 12pt;
+    padding: 10px 12px;
+  }
+}
+
+
+#summaries {
+  margin: 0;
+  h3 { 
+    font-weight: 500; 
+    margin-bottom: 10px;
+  }
+
+  .profile {
+/*    height: 100px;
+*/  }
+
+  .summary-text { 
+    max-width: 300px;
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+  }
+
+  #summary-labor {
+    .profile-text {
+      float: left;
+      text-align: left;
+
+    }
+    .summary-text { 
+    }
+    .profile {
+      float: left;
+      margin-left: 200px;
+    }
+  }
+  #summary-coalition {
+    .profile-text {
+      float: right;
+      text-align: right;
+    }
+    .summary-text { 
+    }
+    .profile {
+      float: right;
+      margin-right: 200px;
+    }
+  }  
+}
 
 @media (min-width: 61.25em) {
-	.text {
+    .text {
     margin-left: 10rem;
     position: relative;
-	}
+    }
 } 
 
 @media (max-width: 38.75rem) {
-	.text {
-	  margin-left: 0; 
-	}  
+    .text {
+      margin-left: 0; 
+    }  
 }  
-
-    

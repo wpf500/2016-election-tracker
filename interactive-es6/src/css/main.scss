@@ -6,6 +6,7 @@
 @import "gu-aus";
 @import "campaign-map";
 @import "bar-graph";
+@import "campaign-table";
 @import "tooltip";
 @import "footable.min";
 
@@ -30,16 +31,27 @@ section {
   clear: none;
 }
 
+.toggle-mode {
+  text-align: center;
+  margin: 10px auto;
+  #toggle-promises {
+    clear: both;
+    font-size: 12pt;
+    padding: 10px 12px;
+  }
+}
+
+
 #summaries {
+  margin: 0;
   h3 { 
-    text-align: center;
     font-weight: 500; 
     margin-bottom: 10px;
   }
 
   .profile {
-    height: 100px;
-  }
+/*    height: 100px;
+*/  }
 
   .summary-text { 
     max-width: 300px;
@@ -47,9 +59,12 @@ section {
   }
 
   #summary-labor {
-    .summary-text { 
-      text-align: left;
+    .profile-text {
       float: left;
+      text-align: left;
+
+    }
+    .summary-text { 
     }
     .profile {
       float: left;
@@ -57,9 +72,11 @@ section {
     }
   }
   #summary-coalition {
-    .summary-text { 
-      text-align: right;
+    .profile-text {
       float: right;
+      text-align: right;
+    }
+    .summary-text { 
     }
     .profile {
       float: right;

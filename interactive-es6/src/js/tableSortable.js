@@ -5,17 +5,17 @@ import fooSorting from './vendor/fooTable.sorting.min'
 
 export class TableSortable {
     constructor(el, data) {
-        console.log(fooTable)
         this.el = el;
-        console.log(data)
         this.table = d3.select(el).append("table")
           .attr("data-sorting", "true")
-
+        var amtFormat = d3.format("$,2f")
         var header = this.table.append("thead").append("tr")
         header.append("th").text("Leader")
         header.append("th").text("Electorate")
         header.append("th").text("Description").attr("data-hide", "phone")
-        header.append("th").text("Dollars Announced").attr("data-hide", "phone,tablet")
+        header.append("th").text("Dollars Announced")
+          .attr("data-hide", "phone,tablet")
+          .style("text-align", "right")
         header.append("th").text("Seat Status").attr("data-hide", "phone,tablet")
         header.append("th").text("Date").attr("data-hide", "phone")
 
@@ -29,14 +29,19 @@ export class TableSortable {
         row.append("td")
           .text((d) => d.politician)
           .attr("class", "leader-column")
+          .style("color", (d) => (d.polician === 'Tony Abbott') ? "#005689" : '#b51800')
+          .style("white-space", "nowrap")
         row.append("td")
           .text((d) => d.electorate)
+          .style("white-space", "nowrap")
         row.append("td")
-          .text((d) => d.description)
+          .text((d) => d.announcement)
         row.append("td")
-          .text((d) => d['dollars-announced'])
+          .text((d) => amtFormat(d['dollars-announced']))
+          .style("text-align", "right")
         row.append("td")
-          .text((d) => d.status)  
+          .text((d) => d.status) 
+          .style("white-space", "nowrap")
         row.append("td")
           .text((d) => d.date)
 
