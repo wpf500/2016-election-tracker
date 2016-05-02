@@ -1,45 +1,46 @@
-<section id="summaries">
-  <section id="summary-labor" class="labor">
-    <img class="profile" src="assets/imgs/turnbull-large.gif">
-    <div class="profile-text">
-      <h3>Bill Shorten</h3>
-      <div class="summary-text">Has visited 25 electorates, and made 52 announcements with an estimated total cost* of $9.76bn.</div>
-    </div>
+<div class="interactive-container">
+  <section id="summaries">
+    <section id="summary-labor" class="labor">
+      <div id="shorten"></div>
+      <div class="profile-text">
+        <h3>Bill Shorten</h3>
+        <div class="summary-text">Has visited 25 electorates, and made 52 announcements with an estimated total cost* of $9.76bn.</div>
+      </div>
+    </section>
+
+    <section id="summary-coalition" class="coalition">
+      <div id="turnbull"></div>
+      <div class="profile-text">
+        <h3>Malcolm Turnbull</h3>
+        <div class="summary-text">Has visited 28 electorates, and made 55 announcements with an estimated total cost* of $7.05bn.</div>
+      </div>
+
+    </section>
   </section>
 
-  <section id="summary-coalition" class="coalition">
-    <img class="profile" src="assets/imgs/turnbull-large.gif">
-
-    <div class="profile-text">
-      <h3>Malcolm Turnbull</h3>
-      <div class="summary-text">Has visited 28 electorates, and made 55 announcements with an estimated total cost* of $7.05bn.</div>
+  <section id="promises">
+    <h2>Promises by category</h2>
+    <div class="controls">
+      <div class="toggle-mode"><a class="btn" id="toggle-promises" data-mode="sum">No. announcements</a></div>
+      <div class="toggle-status">
+        <a class="btn" data-status="all">All</a>
+        <a class="btn" data-status="safe">Safe</a>
+        <a class="btn" data-status="fairlySafe">Fairly Safe</a>
+        <a class="btn" data-status="marginal">Marginal</a>      
+      </div>
     </div>
-
+    <div id="promises-labor" class="bar-graph labor">
+    </div>
+    <div id="promises-coalition" class="bar-graph coalition"></div>
   </section>
-</section>
 
-<section id="promises">
-  <h2>Promises by category</h2>
-  <div class="controls">
-    <div class="toggle-mode"><a class="btn" id="toggle-promises" data-mode="sum">No. announcements</a></div>
-    <div class="toggle-status">
-      <a class="btn" data-status="all">All</a>
-      <a class="btn" data-status="safe">Safe</a>
-      <a class="btn" data-status="fairlySafe">Fairly Safe</a>
-      <a class="btn" data-status="marginal">Marginal</a>      
-    </div>
-  </div>
-  <div id="promises-labor" class="bar-graph labor">
-  </div>
-  <div id="promises-coalition" class="bar-graph coalition"></div>
-</section>
+  <section id="maps">
+    <h2>Here are the places they've been so far...</h2>
+    <div id="campaign-map-labor" class="campaign-map labor"></div>
+    <div id="campaign-map-coalition" class="campaign-map coalition"></div>
+  </section>
 
-<section id="maps">
-  <h2>Here are the places they've been so far...</h2>
-  <div id="campaign-map-labor" class="campaign-map labor"></div>
-  <div id="campaign-map-coalition" class="campaign-map coalition"></div>
-</section>
-
-<section id="announcements-detail">
-  <h2>Here's the full list of announcements</h2>
-</section>
+  <section id="announcements-detail">
+    <h2>Here's the full list of announcements</h2>
+  </section>
+</div>

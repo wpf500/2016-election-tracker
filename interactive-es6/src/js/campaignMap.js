@@ -18,13 +18,15 @@ export class AUSCartogram {
         this.el = el;
         this.svg = d3.select(el).append("svg");
         this.map = this.svg.append('g');
+        this.data = data
+        this.maxVisits = maxVisits
+        this.colour = colour
         this.colours = {
             coalition: "#005689",
             labor: "#b51800"
         }
         var self = this;
-        // this.initTextures()
-        this.renderHex(data, maxVisits, colour)
+        this.renderHex()
         this.project()
 
     }
@@ -63,12 +65,8 @@ export class AUSCartogram {
         }
     }
 
-
-    renderHex(data, maxVisits, colour) {
-        // this.dataByElectorate = d3.nest()
-        //     .key((d) => d.electorate)
-        //     .entries(data.values)
-        var electorateMap = d3.map(data, (d) => d.key)
+    renderHex() {
+        var electorateMap = d3.map(this.data, (d) => d.key)
         this.hexFeatures = topojson.feature(hexagonsTopo, hexagonsTopo.objects.hexagons).features
         this.hexFeatures.forEach((h) => {
             var electorate = electorateMap.get(h.properties.electorate)
@@ -81,7 +79,7 @@ export class AUSCartogram {
             .enter().append("path")
             .attr("d", this.path)
             .classed('cartogram__hex', true)
-        this.render(data, maxVisits, colour);
+        this.render();
     }
     mapCoordsToScreenCoords(coords) {
         console.log(coords)
@@ -96,10 +94,17 @@ export class AUSCartogram {
         return [rect.width/2, rect.height/2];
     }
 
-    render(data, maxVisits, colour) {
+    resize() {
+        this.projection.translate([this.elDimensions.width / 2, this.elDimensions.height/2])
+        this.path.projection(this.projection)
+        this.renderHex()
+        this.project()
+    }
+
+    render() {
         var self = this;
-        var visitScale = d3.scale.sqrt().domain([0, maxVisits])
-        var colourScale = d3.interpolate("#fff", colour)
+        var visitScale = d3.scale.sqrt().domain([0, this.maxVisits])
+        var colourScale = d3.interpolate("#fff", this.colour)
 
         // shared rendering
         var alternate = 0;

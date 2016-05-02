@@ -21,19 +21,19 @@ export class BarGraph {
     setup(maxVisits, maxAmount, colour) {
         var self = this;
         var visitScale = d3.scale.linear().domain([0, maxVisits])
-        var graphMargin = {top: 20, right: 10, bottom: 100, left: 60};
-        this.graphHeight = this.elDimensions.height - graphMargin.top - graphMargin.bottom;
-        var graphWidth = this.elDimensions.width - graphMargin.left - graphMargin.right;
+        this.graphMargin = {top: 20, right: 10, bottom: 100, left: 60};
+        this.graphHeight = this.elDimensions.height - this.graphMargin.top - this.graphMargin.bottom;
+        this.graphWidth = this.elDimensions.width - this.graphMargin.left - this.graphMargin.right;
         this.graph = this.svg
-          .attr("width", graphWidth + graphMargin.left + graphMargin.right)
-          .attr("height", this.graphHeight + graphMargin.bottom + graphMargin.top)
+          .attr("width", this.graphWidth + this.graphMargin.left + this.graphMargin.right)
+          .attr("height", this.graphHeight + this.graphMargin.bottom + this.graphMargin.top)
 
         this.x = d3.scale.ordinal()
-          .rangeRoundBands([graphMargin.left,graphWidth], .2)
+          .rangeRoundBands([this.graphMargin.left,this.graphWidth], .2)
 
         this.yScales = { 
-          sum: d3.scale.linear().range([this.graphHeight, graphMargin.top]).domain([0, maxAmount]).nice(),
-          count: d3.scale.linear().range([this.graphHeight, graphMargin.top]).domain([0, maxVisits]).nice(),
+          sum: d3.scale.linear().range([this.graphHeight, this.graphMargin.top]).domain([0, maxAmount]).nice(),
+          count: d3.scale.linear().range([this.graphHeight, this.graphMargin.top]).domain([0, maxVisits]).nice(),
         }
 
         this.graph.append("g")
@@ -42,11 +42,11 @@ export class BarGraph {
 
         this.graph.append("g")
               .attr("class", "y axis")
-              .attr("transform", `translate(${graphMargin.left + 5},0)`)
+              .attr("transform", `translate(${this.graphMargin.left + 5},1)`)
             .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", -60)
-              .attr("x", -graphMargin.top)
+              .attr("x", -this.graphMargin.top)
               .attr("dy", ".71em")
               .attr("class", "graph-text")
               .style("text-anchor", "end")
@@ -115,6 +115,13 @@ export class BarGraph {
 
     filterStatus(status) {
       this.status = status
+      this.render()
+    }
+
+    resize() {
+      this.graphWidth = this.elDimensions.width - this.graphMargin.left - this.graphMargin.right;
+      this.graph.attr("width", this.graphWidth + this.graphMargin.left + this.graphMargin.right)
+      this.x.rangeRoundBands([this.graphMargin.left,this.graphWidth], .2)
       this.render()
     }
 }

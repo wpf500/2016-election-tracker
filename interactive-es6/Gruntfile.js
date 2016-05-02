@@ -95,6 +95,7 @@ module.exports = function(grunt) {
                     {expand: true, cwd: 'src/', src: ['assets/**/*'], dest: 'build'},
                 ]
             },
+
             deploy: {
                 files: [
                     { // BOOT and EMBED
@@ -110,6 +111,34 @@ module.exports = function(grunt) {
                         dest: 'deploy/<%= visuals.timestamp %>/<%= visuals.timestamp %>'
                     }
                 ]
+            }
+        },
+        replace: {
+            local: {
+                options: {
+                    patterns: [{
+                        match: /@@assetPath@@/g,
+                        replacement: 'http://localhost:8000'
+                    }]
+                },
+                files: [{
+                    src: ['build/**/*.html', 'build/**/*.js', 'build/**/*.css'],
+                    dest: './',
+                    expand: true
+                }]
+            },
+            remote: {
+                options: {
+                    patterns: [{
+                        match: /@@assetPath@@/g,
+                        replacement: '<%= visuals.s3.domain %><%= visuals.s3.path %>/<%= visuals.timestamp %>'
+                    }]
+                },
+                files: [{
+                    src: ['build/**/*.html', 'build/**/*.js', 'build/**/*.css'],
+                    dest: './',
+                    expand: true
+                }]
             }
         },
         prompt: {
@@ -228,9 +257,9 @@ module.exports = function(grunt) {
     grunt.registerTask('embed', ['shell:embed', 'template:embed', 'sass:embed']);
     grunt.registerTask('interactive', ['shell:interactive', 'template:bootjs', 'sass:interactive']);
     grunt.registerTask('all', ['interactive', 'embed', 'copy:assets'])
-    grunt.registerTask('default', ['clean', 'copy:harness', 'all', 'connect', 'watch']);
+    grunt.registerTask('default', ['clean', 'copy:harness', 'all', 'replace:local','connect', 'watch']);
     grunt.registerTask('build', ['clean', 'all']);
-    grunt.registerTask('deploy', ['loadDeployConfig', 'prompt:visuals', 'build', 'copy:deploy', 'aws_s3', 'boot_url']);
+    grunt.registerTask('deploy', ['loadDeployConfig', 'prompt:visuals', 'build', 'copy:deploy', 'replace:remote', 'aws_s3', 'boot_url']);
 
     grunt.loadNpmTasks('grunt-aws');
 

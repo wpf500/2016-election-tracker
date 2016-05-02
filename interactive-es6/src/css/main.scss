@@ -8,6 +8,8 @@
 @import "bar-graph";
 @import "campaign-table";
 @import "tooltip";
+@import "blink";
+@import "sprites";
 @import "footable.min";
 
 section {
@@ -27,7 +29,6 @@ section {
 
 .labor, .coalition {
   float: left;
-  width: 50%;
   clear: none;
 }
 
@@ -48,11 +49,9 @@ section {
     font-weight: 500; 
     margin-bottom: 10px;
   }
-
-  .profile {
-/*    height: 100px;
-*/  }
-
+  .labor, .coalition {
+    width: 50%;
+  }
   .summary-text { 
     max-width: 300px;
     font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
@@ -66,7 +65,7 @@ section {
     }
     .summary-text { 
     }
-    .profile {
+    #shorten {
       float: left;
       margin-left: 200px;
     }
@@ -78,7 +77,7 @@ section {
     }
     .summary-text { 
     }
-    .profile {
+    #turnbull {
       float: right;
       margin-right: 200px;
     }

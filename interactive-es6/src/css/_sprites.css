@@ -1,0 +1,27 @@
+#turnbull {
+  background: transparent url(@@assetPath@@/assets/imgs/turnbull-med-left.png) 0 0 no-repeat;
+  width:90px;
+  height:125px;
+  }
+
+#shorten {
+  background: transparent url(@@assetPath@@/assets/imgs/shorten-med-right.png) 0 0 no-repeat;
+  width:90px;
+  height:135px;
+} 
+
+
+@media (max-width:600px) {
+
+  #turnbull {
+    background: transparent url(@@assetPath@@/assets/imgs/turnbull-small-left.png) 0 0 no-repeat;
+    width:65px;
+    height:90px;
+    }
+
+  #shorten {
+    background: transparent url(@@assetPath@@/assets/imgs/shorten-small-right.png) 0 0 no-repeat;
+    width:65px;
+    height:90px;
+  } 
+}

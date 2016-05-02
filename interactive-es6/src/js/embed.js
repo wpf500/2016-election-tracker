@@ -5,6 +5,8 @@ import d3 from 'd3'
 import { AUSCartogram } from './campaignMap'
 import { BarGraph } from './barGraph'
 import { TableSortable } from './tableSortable'
+import animateSprite from './vendor/jquery.animateSprite.min'
+import sprites from './sprites'
 import campaignData from './data/events-categorised.json!json'
 
 
@@ -51,8 +53,8 @@ function handleData(data) {
 
     var categoriesMap = d3.map(dataByCategory, (d) => d.key)
     var electorateMap = d3.map(visitsByLeader, (d) => d.key)
-    new AUSCartogram("#campaign-map-coalition", electorateMap.get(coalitionLeader).values, maxVisitsByElectorate, "#005689")
-    new AUSCartogram("#campaign-map-labor", electorateMap.get(laborLeader).values, maxVisitsByElectorate, '#b51800')
+    var coalitionMap = new AUSCartogram("#campaign-map-coalition", electorateMap.get(coalitionLeader).values, maxVisitsByElectorate, "#005689")
+    var laborMap = new AUSCartogram("#campaign-map-labor", electorateMap.get(laborLeader).values, maxVisitsByElectorate, '#b51800')
 
     var laborBar = new BarGraph("#promises-labor", categoriesMap.get(laborLeader).values, maxVisitsByCategory, maxAmountByCategory, "#005689")
     var coalitionBar = new BarGraph("#promises-coalition", categoriesMap.get(coalitionLeader).values, maxVisitsByCategory, maxAmountByCategory, '#b51800')
@@ -78,4 +80,24 @@ function handleData(data) {
       })
 
     new TableSortable("#announcements-detail", data.sheets.events)
+    setupAnimations()
+    shortenBlink()
+    turnbullBlink()
+
+    var to=null
+    var lastWidth = document.querySelector(".interactive-container").getBoundingClientRect()
+    window.addEventListener('resize', () => {
+      var thisWidth = document.querySelector(".interactive-container").getBoundingClientRect()
+      if (lastWidth != thisWidth) {
+        window.clearTimeout(to);
+        to = window.setTimeout(resize(), 500)
+      }
+    })
+
+    function resize() {
+      coalitionMap.resize()
+      laborMap.resize()
+      coalitionBar.resize()
+      laborBar.resize()
+    }
 }
