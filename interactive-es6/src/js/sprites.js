@@ -30,7 +30,6 @@ function turnbullBlink() {
       turnbullBlinkTimer = window.setInterval(function() {
         var randTime = Math.floor((Math.random() * 3) + 1);
         var blink = 'blink' + String(randTime)
-        console.log(blink);
         $("#turnbull").animateSprite('play', blink);
       }, 3000);
 }
@@ -40,7 +39,6 @@ function shortenBlink() {
       shortenBlinkTimer = window.setInterval(function() {
         var randTime = Math.floor((Math.random() * 3) + 1);
         var blink = 'blink' + String(randTime)
-        console.log(blink);
         $("#shorten").animateSprite('play', blink);
       }, 3000);
 }
