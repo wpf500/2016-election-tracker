@@ -5,6 +5,13 @@
   padding: 20px;
   color: #333;
   overflow:hidden;
+  position:relative;
+
+  .tooltip {
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+    text-align: center;
+    min-width: 60px;
+  }
 
   svg {
     text-align: center;

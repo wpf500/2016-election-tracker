@@ -56,6 +56,8 @@ export class BarGraph {
             .enter().append("rect")
               .attr("class", "bars")
               .attr("fill", colour)
+              .on("mouseover", (d) => this.renderTooltip(d))
+              .on("mouseout", () => this.hideTooltip())
 
         this.render()
     }
@@ -101,6 +103,39 @@ export class BarGraph {
       } else {
         this.graph.select(".graph-text").text("No. announcements");
       }
+    }
+
+    renderTooltip(data) {
+      if (!this.tooltip) {
+          var tooltip = d3.select(this.el).append("div")
+              .attr("class", "tooltip")
+          this.tooltip = document.querySelector(`${this.el} .tooltip`)
+      }
+      var msg = (this.mode === "sum") ? `$${data.values[this.status].sum/1000000000}B` : data.values[this.status].count
+
+      this.tooltip.innerHTML =
+          '<span class="tooltip__spout"></span>' +
+          `<h4>${msg}</h4>`
+
+      var rect = this.tooltip.getBoundingClientRect();
+      var y = this.y(data.values[this.status][this.mode])
+      var x = this.x(data.key) + this.x.rangeBand()
+      this.tooltip.style.visibility = 'visible';
+
+      var elDimensions = this.elDimensions;
+      this.tooltip.style.top = `${y + rect.height/2 - 10}px`;
+      var left = x - rect.width/2 + 1;
+      var maxLeft = elDimensions.width - rect.width;
+      var minLeft = 0;
+      this.tooltip.style.left = `${left}px`
+
+      var spoutOffset = rect.width/2;
+      this.tooltip.querySelector('.tooltip__spout').style.left = spoutOffset + 'px';
+      this.tooltip.className = 'tooltip tooltip--above'
+    }
+
+    hideTooltip() {
+        if (this.tooltip) this.tooltip.style.visibility = 'hidden';
     }
 
     toggleMode() {
