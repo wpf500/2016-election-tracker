@@ -1,0 +1,56 @@
+header.page-header {
+  border-bottom:1px solid #dcdcdc;
+  padding-bottom:.45rem;
+
+  h1 {
+    font-family: "Guardian Egyptian Web",Georgia,serif;
+    font-size: 32px;
+    font-weight: normal;
+    color: black;
+    line-height: 38px;
+    padding-top: 30px;
+  }
+
+  .headerText {
+      color: #767676;
+      font-family: "Guardian Text Egyptian Web",Georgia,serif;
+      font-size: 18px;
+  }
+  .timestampSocial {
+    font-size:0.8rem;
+    line-height:32px;
+    color:#767676;
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+  }
+
+  .btns-share .btn-tt {
+    background: #bdbdbd url(@@assetPath@@/assets/imgs/twitterIcon.svg) no-repeat center center;
+  }
+  .btns-share .btn-tt:hover {
+    background-color: #03b3ee;
+  }
+
+  .btns-share .btn-fb {
+      background: #bdbdbd url(@@assetPath@@/assets/imgs/facebookIcon.svg) no-repeat center center;
+  }
+
+  .btns-share .btn-fb:hover {
+      background-color: #3067a3;
+  }
+  .btns-share button {
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 9000px;
+      display: inline-block;
+      vertical-align: top;
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: button;
+      text-transform: none;
+      overflow: visible;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+  }
+}
