@@ -41,7 +41,7 @@ export class AUSCartogram {
 
     initProjection() {
         var elDimensions = this.elDimensions;
-        var scale = elDimensions.width
+        var scale = elDimensions.width * 1.2
         this.svg.attr("width", "100%")
             .attr("height", elDimensions.height)
         this.projection = d3.geo.mercator()
@@ -87,7 +87,7 @@ export class AUSCartogram {
     }
     get elDimensions() { 
         var width = document.querySelector(this.el).getBoundingClientRect().width
-        return {width: width, height: width * 0.8}
+        return {width: width, height: width * 0.9}
     }
     get elCenter() {
         var rect = this.elDimensions;

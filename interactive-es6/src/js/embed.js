@@ -13,17 +13,28 @@ import campaignData from './data/events-categorised.json!json'
 window.init = function init(el, config) {
   iframeMessenger.enableAutoResize()
   el.innerHTML = embedHTML.replace(/%assetPath%/g, config.assetPath);
-  reqwest({
+  var req;
+  req = reqwest({
     url: 'https://interactive.guim.co.uk/docsdata/1kqqnkbUmWNzzODlpL96aYfhyhfCPZkfmj9kUBaoFj3M.json',
     type: 'json',
     crossOrigin: true,
-    success: resp => handleData(resp)
+    success: resp => handleData(req.request.getResponseHeader('Last-Modified'), resp)
   });
 }
 
-function handleData(data) {
+function handleData(date, data) {
+    var dateFormat = d3.time.format("%A %B %d, %H:%M AEST")
+    d3.select("#timeStamp").text(dateFormat(new Date(date)))
+
+    console.log(date)
+
     var laborLeader = 'Kevin Rudd'
     var coalitionLeader = 'Tony Abbott'
+
+    var dataByLeader = d3.nest()
+      .key((d) => d.politician)
+      .entries(data.sheets.events)
+
     var visitsByLeader = d3.nest()
       .key((d) => d.politician)
       .key((d) => d.electorate)
@@ -51,25 +62,53 @@ function handleData(data) {
 
     var maxVisitsByElectorate = d3.max(visitsByLeader, (p) => d3.max(p.values, (d) => d.values.length))
 
+    var databyLeaderMap = d3.map(dataByLeader, (d) => d.key)
     var categoriesMap = d3.map(dataByCategory, (d) => d.key)
     var electorateMap = d3.map(visitsByLeader, (d) => d.key)
+
+
+    console.log(visitsByLeader, dataByCategory)
+
+    var numElectorates = {
+      labor: electorateMap.get(laborLeader).values.length,
+      coalition: electorateMap.get(coalitionLeader).values.length
+    }
+
+    var sumCost = {
+      labor: d3.sum(databyLeaderMap.get(laborLeader).values, (d) => +d["dollars-announced"]),
+      coalition: d3.sum(databyLeaderMap.get(coalitionLeader).values, (d) => +d["dollars-announced"])
+    }
+
+    var categoryFocus = {
+      labor: categoriesMap.get(laborLeader).values.reduce((a,b) => a.values.all.count > b.values.all.count ? a : b),
+      coalition: categoriesMap.get(coalitionLeader).values.reduce((a,b) => a.values.all.count > b.values.all.count ? a : b)
+    }
+
+    var categoryCost = {
+      labor: categoriesMap.get(laborLeader).values.reduce((a,b) => a.values.all.sum > b.values.all.sum ? a : b),
+      coalition: categoriesMap.get(coalitionLeader).values.reduce((a,b) => a.values.all.sum > b.values.all.sum ? a : b)
+    }
+
+    d3.select("#summary-labor .summary-text")
+      .html(summaryText(numElectorates.labor, 53, d3.format(".3r")(sumCost.labor/1000000000), categoryFocus.labor.key, categoryCost.labor.key))
+    d3.select("#summary-coalition .summary-text")
+      .html(summaryText(numElectorates.coalition, 53, d3.format(".3r")(sumCost.coalition/1000000000), categoryFocus.coalition.key, categoryCost.coalition.key))
+
     var coalitionMap = new AUSCartogram("#campaign-map-coalition", electorateMap.get(coalitionLeader).values, maxVisitsByElectorate, "#005689")
     var laborMap = new AUSCartogram("#campaign-map-labor", electorateMap.get(laborLeader).values, maxVisitsByElectorate, '#b51800')
 
     var laborBar = new BarGraph("#promises-labor", categoriesMap.get(laborLeader).values, maxVisitsByCategory, maxAmountByCategory, "#005689")
     var coalitionBar = new BarGraph("#promises-coalition", categoriesMap.get(coalitionLeader).values, maxVisitsByCategory, maxAmountByCategory, '#b51800')
+   
+    var promisesBtn = d3.selectAll(".toggle-mode a")
+      .on("click", function() {
+        var mode = d3.select(this).attr("data-mode")
 
-    var promisesBtn = d3.select("#toggle-promises")
-      .on("click", () => {
-        laborBar.toggleMode()
-        coalitionBar.toggleMode()
-        if (promisesBtn.attr("data-mode") === "sum") {
-          promisesBtn.attr("data-mode", "count")
-            .text("$ Total")
-        } else {
-          promisesBtn.attr("data-mode", "sum")
-            .text("No. announcements")
-        }
+        laborBar.toggleMode(mode)
+        coalitionBar.toggleMode(mode)
+        d3.selectAll(".toggle-mode a")
+          .classed("selected", false)
+        d3.select(this).classed("selected", true)
       })
 
     var statusBtn = d3.selectAll(".toggle-status a")
@@ -77,6 +116,9 @@ function handleData(data) {
         var status = d3.select(this).attr("data-status")
         laborBar.filterStatus(status)
         coalitionBar.filterStatus(status)
+        d3.selectAll(".toggle-status a")
+          .classed("selected", false)
+        d3.select(this).classed("selected", true)
       })
 
     new TableSortable("#announcements-detail", data.sheets.events)
@@ -99,5 +141,19 @@ function handleData(data) {
       laborMap.resize()
       coalitionBar.resize()
       laborBar.resize()
+    }
+
+    function summaryText(electorates, announcements, cost, categoryFocus, categoryCost) {
+      var text = `Has visited <span class="figure-txt">${electorates} electorates</span>,` +
+        ` and made <span class="figure-txt">${announcements} announcements</span> ` + 
+        ` with an estimated total cost* of <span class="figure-txt">$${cost}bn</span>. `
+
+      if (categoryFocus === categoryCost) {
+        text = text + `His major focus is <span class="category">${categoryFocus}</span>.`
+      } else {
+        text = text + `His major focus is <span class="category">${categoryFocus}</span>` +
+          ` but has committed the most money to <span class="category">${categoryCost}</span>.`
+      }
+      return text
     }
 }

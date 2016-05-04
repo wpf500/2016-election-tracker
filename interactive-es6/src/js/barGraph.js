@@ -6,7 +6,7 @@ export class BarGraph {
         this.svg = d3.select(el).append("svg");
         this.data = data
         var self = this;
-        this.mode = 'sum'
+        this.mode = 'count'
         this.status = 'all'
         this.setup(maxVisits, maxAmount, colour)
     }
@@ -21,7 +21,7 @@ export class BarGraph {
     setup(maxVisits, maxAmount, colour) {
         var self = this;
         var visitScale = d3.scale.linear().domain([0, maxVisits])
-        this.graphMargin = {top: 20, right: 10, bottom: 100, left: 60};
+        this.graphMargin = {top: 20, right: 20, bottom: 100, left: 70};
         this.graphHeight = this.elDimensions.height - this.graphMargin.top - this.graphMargin.bottom;
         this.graphWidth = this.elDimensions.width - this.graphMargin.left - this.graphMargin.right;
         this.graph = this.svg
@@ -29,7 +29,7 @@ export class BarGraph {
           .attr("height", this.graphHeight + this.graphMargin.bottom + this.graphMargin.top)
 
         this.x = d3.scale.ordinal()
-          .rangeRoundBands([this.graphMargin.left,this.graphWidth], .2)
+          .rangeRoundBands([this.graphMargin.left,this.graphWidth + this.graphMargin.left], .2)
 
         this.yScales = { 
           sum: d3.scale.linear().range([this.graphHeight, this.graphMargin.top]).domain([0, maxAmount]).nice(),
@@ -42,7 +42,7 @@ export class BarGraph {
 
         this.graph.append("g")
               .attr("class", "y axis")
-              .attr("transform", `translate(${this.graphMargin.left + 5},1)`)
+              .attr("transform", `translate(${this.graphMargin.left},0)`)
             .append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", -60)
@@ -138,13 +138,8 @@ export class BarGraph {
         if (this.tooltip) this.tooltip.style.visibility = 'hidden';
     }
 
-    toggleMode() {
-      if (this.mode === 'sum') {
-        this.mode = 'count'
-      } else {
-        this.mode = 'sum'
-      }
-
+    toggleMode(mode) {
+      this.mode = mode
       this.render()
     }
 
@@ -156,7 +151,7 @@ export class BarGraph {
     resize() {
       this.graphWidth = this.elDimensions.width - this.graphMargin.left - this.graphMargin.right;
       this.graph.attr("width", this.graphWidth + this.graphMargin.left + this.graphMargin.right)
-      this.x.rangeRoundBands([this.graphMargin.left,this.graphWidth], .2)
+      this.x.rangeRoundBands([this.graphMargin.left,this.graphWidth + this.graphMargin.left], .2)
       this.render()
     }
 }

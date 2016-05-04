@@ -2,6 +2,7 @@
   width: 50%;
   float: left;
   position: relative;
+  text-align: center;
 
   .tooltip {
     font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
@@ -10,7 +11,7 @@
     h4 { font-weight: 500; }
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
 }

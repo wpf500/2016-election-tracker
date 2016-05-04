@@ -2,10 +2,11 @@
   width: 50%;
   height: 300px;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px 0;
   color: #333;
   overflow:hidden;
   position:relative;
+  text-align: center;
 
   .tooltip {
     font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
@@ -40,7 +41,12 @@
     }
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 800px) {
     width: 100%;
+    padding: 0;
+
+    svg .axis .tick text{
+      font-size: 11px;
+    }
   }
 }
