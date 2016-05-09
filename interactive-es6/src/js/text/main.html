@@ -54,6 +54,16 @@
 
     <section id="maps">
       <h2>Where they have been so far</h2>
+      <div id="date-control">
+        <div id="date-control-text"></div>
+        <div id="slider-container">
+          <div id="slider"></div>
+        </div>
+      </div>
+      <section id="events">
+        <div id="events-labor" class="events-list labor"></div>
+        <div id="events-coalition" class="events-list coalition"></div>
+      </section>
       <div id="campaign-map-labor" class="campaign-map labor">
         <h2 class="party-title labor">Bill Shorten</h2>
       </div>
@@ -64,6 +74,20 @@
 
     <section id="announcements-detail">
       <h2>The full list of announcements</h2>
+      <table id="announcements-table" class="table" data-sorting="true">
+        <thead> 
+          <tr>
+            <th data-class="leaderColumn">Leader</th>
+            <th>Electorate</th>
+            <th data-breakpoints="xs">Description</th>
+            <th data-breakpoints="xs">Amount</th>
+            <th data-breakpoints="xs" >Seat status</th>
+            <th data-sorted="true" data-sort-initial="descending" data-type="date" data-format-string="DD/MM/YYYY">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>  
+      </table>  
     </section>
   </div>
 </div>

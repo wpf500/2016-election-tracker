@@ -21,7 +21,7 @@ export class BarGraph {
     setup(maxVisits, maxAmount, colour) {
         var self = this;
         var visitScale = d3.scale.linear().domain([0, maxVisits])
-        this.graphMargin = {top: 20, right: 20, bottom: 100, left: 70};
+        this.graphMargin = {top: 30, right: 20, bottom: 100, left: 70};
         this.graphHeight = this.elDimensions.height - this.graphMargin.top - this.graphMargin.bottom;
         this.graphWidth = this.elDimensions.width - this.graphMargin.left - this.graphMargin.right;
         this.graph = this.svg
@@ -119,14 +119,12 @@ export class BarGraph {
 
       var rect = this.tooltip.getBoundingClientRect();
       var y = this.y(data.values[this.status][this.mode])
-      var x = this.x(data.key) + this.x.rangeBand()
+      var x = this.x(data.key) + this.x.rangeBand()/2
       this.tooltip.style.visibility = 'visible';
-
       var elDimensions = this.elDimensions;
-      this.tooltip.style.top = `${y + rect.height/2 - 10}px`;
-      var left = x - rect.width/2 + 1;
+      this.tooltip.style.top = `${y - rect.height - 8}px`;
+      var left = x - rect.width/2 - 2;
       var maxLeft = elDimensions.width - rect.width;
-      var minLeft = 0;
       this.tooltip.style.left = `${left}px`
 
       var spoutOffset = rect.width/2;

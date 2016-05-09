@@ -87,7 +87,7 @@ export class AUSCartogram {
     }
     get elDimensions() { 
         var width = document.querySelector(this.el).getBoundingClientRect().width
-        return {width: width, height: width * 0.9}
+        return {width: width, height: width}
     }
     get elCenter() {
         var rect = this.elDimensions;
@@ -157,13 +157,12 @@ export class AUSCartogram {
 
         var rect = this.tooltip.getBoundingClientRect();
         var centroid = this.hexCentroids[electorate.properties.electorate];
-        // var coords = this.mapCoordsToScreenCoords(centroid);
         var coords = centroid
         this.tooltip.style.visibility = 'visible';
 
         var elDimensions = this.elDimensions;
         var topSide = coords[1] > (elDimensions.height / 2);
-        this.tooltip.style.top = (topSide ? coords[1] - rect.height/2 : coords[1] - rect.height/2) + 'px';
+        this.tooltip.style.top = (topSide ? coords[1] - rect.height - 8 : coords[1] + rect.height/2 - 8) + 'px';
         var desiredLeft = (coords[0] - (rect.width / 2));
         var maxLeft = elDimensions.width - rect.width;
         var minLeft = 0;

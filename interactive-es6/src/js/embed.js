@@ -5,8 +5,10 @@ import d3 from 'd3'
 import { AUSCartogram } from './campaignMap'
 import { BarGraph } from './barGraph'
 import { TableSortable } from './tableSortable'
+import { EventsList } from './eventsList'
 import animateSprite from './vendor/jquery.animateSprite.min'
 import sprites from './sprites'
+import noUiSlider from './vendor/nouislider.min'
 import campaignData from './data/events-categorised.json!json'
 
 
@@ -23,16 +25,21 @@ window.init = function init(el, config) {
 }
 
 function handleData(date, data) {
-    var dateFormat = d3.time.format("%A %B %d, %H:%M AEST")
-    d3.select("#timeStamp").text(dateFormat(new Date(date)))
-
-    console.log(date)
+    var timestampFormat = d3.time.format("%A %B %d, %H:%M AEST")
+    var dateFormat = d3.time.format("%d/%m/%Y")
+    d3.select("#timeStamp").text(timestampFormat(new Date(date)))
 
     var laborLeader = 'Kevin Rudd'
     var coalitionLeader = 'Tony Abbott'
 
     var dataByLeader = d3.nest()
       .key((d) => d.politician)
+      .entries(data.sheets.events)
+
+    var eventsByLeader = d3.nest()
+      .key((d) => d.politician)
+      .key((d) => d.date)      
+      .key((d) => d.event)      
       .entries(data.sheets.events)
 
     var visitsByLeader = d3.nest()
@@ -59,24 +66,26 @@ function handleData(date, data) {
 
     var maxVisitsByCategory = d3.max(dataByCategory, (p) => d3.max(p.values, (d) => d.values.all.count))
     var maxAmountByCategory = d3.max(dataByCategory, (p) => d3.max(p.values, (d) => d.values.all.sum))
-
     var maxVisitsByElectorate = d3.max(visitsByLeader, (p) => d3.max(p.values, (d) => d.values.length))
-
-    var databyLeaderMap = d3.map(dataByLeader, (d) => d.key)
+    var dateExtent = d3.extent(data.sheets.events, (d) => dateFormat.parse(d.date))
+    var dataByLeaderMap = d3.map(dataByLeader, (d) => d.key)
     var categoriesMap = d3.map(dataByCategory, (d) => d.key)
     var electorateMap = d3.map(visitsByLeader, (d) => d.key)
-
-
-    console.log(visitsByLeader, dataByCategory)
+    var eventsMap = d3.map(eventsByLeader, (d) => d.key)
 
     var numElectorates = {
       labor: electorateMap.get(laborLeader).values.length,
       coalition: electorateMap.get(coalitionLeader).values.length
     }
 
+    var numAnnouncements = {
+      labor: dataByLeaderMap.get(laborLeader).values.length,
+      coalition: dataByLeaderMap.get(coalitionLeader).values.length
+    }
+
     var sumCost = {
-      labor: d3.sum(databyLeaderMap.get(laborLeader).values, (d) => +d["dollars-announced"]),
-      coalition: d3.sum(databyLeaderMap.get(coalitionLeader).values, (d) => +d["dollars-announced"])
+      labor: d3.sum(dataByLeaderMap.get(laborLeader).values, (d) => +d["dollars-announced"]),
+      coalition: d3.sum(dataByLeaderMap.get(coalitionLeader).values, (d) => +d["dollars-announced"])
     }
 
     var categoryFocus = {
@@ -90,16 +99,45 @@ function handleData(date, data) {
     }
 
     d3.select("#summary-labor .summary-text")
-      .html(summaryText(numElectorates.labor, 53, d3.format(".3r")(sumCost.labor/1000000000), categoryFocus.labor.key, categoryCost.labor.key))
+      .html(summaryText(numElectorates.labor, numAnnouncements.labor, d3.format(".3r")(sumCost.labor/1000000000), categoryFocus.labor.key, categoryCost.labor.key))
     d3.select("#summary-coalition .summary-text")
-      .html(summaryText(numElectorates.coalition, 53, d3.format(".3r")(sumCost.coalition/1000000000), categoryFocus.coalition.key, categoryCost.coalition.key))
+      .html(summaryText(numElectorates.coalition, numAnnouncements.coalition, d3.format(".3r")(sumCost.coalition/1000000000), categoryFocus.coalition.key, categoryCost.coalition.key))
+
+    var laborBar = new BarGraph("#promises-labor", categoriesMap.get(laborLeader).values, maxVisitsByCategory, maxAmountByCategory, '#b51800')
+    var coalitionBar = new BarGraph("#promises-coalition", categoriesMap.get(coalitionLeader).values, maxVisitsByCategory, maxAmountByCategory, "#005689")
+   
+    var laborEvents = new EventsList("#events-labor", eventsMap.get(laborLeader).values)
+    var coalitionEvents = new EventsList("#events-coalition", eventsMap.get(coalitionLeader).values)
 
     var coalitionMap = new AUSCartogram("#campaign-map-coalition", electorateMap.get(coalitionLeader).values, maxVisitsByElectorate, "#005689")
     var laborMap = new AUSCartogram("#campaign-map-labor", electorateMap.get(laborLeader).values, maxVisitsByElectorate, '#b51800')
 
-    var laborBar = new BarGraph("#promises-labor", categoriesMap.get(laborLeader).values, maxVisitsByCategory, maxAmountByCategory, "#005689")
-    var coalitionBar = new BarGraph("#promises-coalition", categoriesMap.get(coalitionLeader).values, maxVisitsByCategory, maxAmountByCategory, '#b51800')
-   
+    var dateScale = d3.time.scale().domain(dateExtent)
+    var dateControlDisplayFormat = d3.time.format("%A, %d %B")
+    dateScale.range([0, dateScale.ticks(d3.time.days, 1).length])
+    var slider = document .querySelector('#slider')
+    noUiSlider.create(slider, {
+      start: [0],
+      step: 1,
+      animate:true,
+      connect: 'lower',
+      range: {
+          'min': 0,
+          'max': dateScale.ticks(d3.time.days, 1).length
+      }
+    })
+
+    laborEvents.render(dateScale.invert(0))
+    coalitionEvents.render(dateScale.invert(0))
+
+    slider.noUiSlider.on('update', function( value ) {
+      var date = dateControlDisplayFormat(dateScale.invert(value[0]))
+      document.querySelector('#date-control-text').innerHTML = `On ${date}&hellip;`;
+      laborEvents.render(dateScale.invert(value[0]))
+      coalitionEvents.render(dateScale.invert(value[0]))    
+    });
+
+    // toggle buttons for bar graphs
     var promisesBtn = d3.selectAll(".toggle-mode a")
       .on("click", function() {
         var mode = d3.select(this).attr("data-mode")
@@ -141,6 +179,13 @@ function handleData(date, data) {
       laborMap.resize()
       coalitionBar.resize()
       laborBar.resize()
+      $("#turnbull").remove();
+      $(".turnbullContainer").append("<div id='turnbull'></div>");
+      $("#shorten").remove();
+      $(".shortenContainer").append("<div id='shorten'></div>");
+      setupAnimations()
+      shortenBlink()
+      turnbullBlink()
     }
 
     function summaryText(electorates, announcements, cost, categoryFocus, categoryCost) {

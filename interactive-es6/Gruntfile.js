@@ -256,8 +256,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('embed', ['shell:embed', 'template:embed', 'sass:embed']);
     grunt.registerTask('interactive', ['shell:interactive', 'template:bootjs', 'sass:interactive']);
-    grunt.registerTask('all', ['interactive', 'embed', 'replace:local', 'copy:assets'])
-    grunt.registerTask('default', ['clean', 'copy:harness', 'all','connect', 'watch']);
+    grunt.registerTask('all', ['interactive', 'embed', 'copy:assets'])
+    grunt.registerTask('default', ['clean', 'copy:harness', 'all', 'replace:local', 'connect', 'watch']);
     grunt.registerTask('build', ['clean', 'all']);
     grunt.registerTask('deploy', ['loadDeployConfig', 'prompt:visuals', 'build', 'replace:remote', 'copy:deploy', 'aws_s3', 'boot_url']);
 

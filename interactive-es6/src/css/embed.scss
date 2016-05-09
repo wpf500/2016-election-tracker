@@ -20,11 +20,13 @@ body {
 @import "header";
 @import "campaign-map";
 @import "bar-graph";
+@import "events-list";
 @import "campaign-table";
 @import "tooltip";
 @import "blink";
 @import "sprites";
 @import "footable.min";
+@import "slider";
 
 
 .background {
@@ -46,6 +48,12 @@ body {
     bottom: 0;
     left: 50%;
     border-left: 1px solid #dcdcdc;
+  }
+
+  @media (max-width: 800px) {
+    &:after {
+      border: none;
+    }
   }
 }
 
@@ -89,6 +97,9 @@ section {
     font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
     max-width: 320px;
   }
+  .profile-text { 
+    min-width: 320px;
+  }
   .figure-txt, .category{
     font-weight: bold;
   }
@@ -100,7 +111,6 @@ section {
   #summary-labor {
     .profile-text { 
       float: right;
-      min-width: 320px;
       margin-right: 20px;
       text-align: left;
     }
@@ -116,7 +126,6 @@ section {
   #summary-coalition {
     .profile-text { 
       float: left;
-      min-width: 320px;
       text-align: right;
       margin-left: 20px;
     }
@@ -128,7 +137,16 @@ section {
       margin-left: 20px;
       margin-top: 30px;
     }
-  }  
+  } 
+  @media (max-width: 800px) {
+    .labor, .coalition {
+      width: 100%;
+    }
+
+    .profile-text {
+      min-width: initial;
+    }
+  } 
 }
 
 #promises {
@@ -160,6 +178,37 @@ section {
       }
     }
   }
+}
+
+#date-control {
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+
+  #slider-container {
+    margin: 0 auto;
+  }
+  
+  @media (max-width: 800px) {
+    width: 100%;
+    box-sizing: border-box
+  }
+}
+
+#events {
+  height: 240px;
+}
+
+.party-title {
+  display: none;
+  padding: 0;
+
+  &.labor { color: #b51800; }
+  &.coalition { color: #005689; }
 }
 
 @media (min-width: 61.25em) {

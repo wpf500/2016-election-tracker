@@ -7,11 +7,14 @@
 @import "header";
 @import "campaign-map";
 @import "bar-graph";
+@import "events-list";
 @import "campaign-table";
 @import "tooltip";
 @import "blink";
 @import "sprites";
+@import "font-awesome";
 @import "footable.min";
+@import "slider";
 
 .background {
   background-color: #eee;
@@ -164,10 +167,34 @@ section {
   }
 }
 
+#date-control {
+  width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+
+  #slider-container {
+    margin: 0 auto;
+  }
+
+  @media (max-width: 800px) {
+    width: 100%;
+    box-sizing: border-box
+  }
+}
+
+#events {
+  height: 230px;
+}
+
 .party-title {
   display: none;
   padding: 0;
-  
+  background: none;
+
   &.labor { color: #b51800; }
   &.coalition { color: #005689; }
 }
@@ -175,8 +202,18 @@ section {
 @media (max-width: 800px) {
   .party-title {
     display: inherit;
+    position: absolute;
+    top: 0;
     text-align: center;
     width: 100%;
+  }
+
+  #events {
+    height: 120px;
+
+    .events-list .announcements {
+      display: none;
+    }
   }
 }
 
