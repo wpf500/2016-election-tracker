@@ -22,10 +22,12 @@ System.config({
     "moment": "github:moment/moment@2.12.0",
     "reqwest": "github:ded/reqwest@1.1.5",
     "riccardoscalco/textures": "github:riccardoscalco/textures@master",
+    "scrollmagic": "npm:scrollmagic@2.0.5",
     "text": "github:systemjs/plugin-text@0.0.2",
     "topojson": "npm:topojson@1.6.24",
     "traceur": "github:jmcriffey/bower-traceur@0.0.91",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
+    "velocity-animate": "npm:velocity-animate@1.2.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -302,6 +304,10 @@ System.config({
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:velocity-animate@1.2.3": {
+      "jquery": "npm:jquery@2.2.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:xtend@2.1.2": {

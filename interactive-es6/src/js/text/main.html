@@ -1,6 +1,7 @@
 <div class="background">
   <header class="page-header row">
     <h1>Election campaign tracker: where have the candidates been and what have they promised?</h1>
+    <div id="rollin-graphic" class="rollin"></div>
     <div class="col50">
       <p class="summaryText headerText">We're logging every campaign appearance from Bill Shorten and Malcolm Turnbull since the start of the election campaign. Here you can see where they've been the most, what they did there, and if they're visiting more marginal than safe seats.</p>
       <div class="timestampSocial">Last update <span id="timeStamp"></span></div>
@@ -31,11 +32,11 @@
     <section id="promises">
       <h2>Promises by category</h2>
       <div class="controls">
-        <div class="toggle-mode">
+<!--         <div class="toggle-mode">
           <h4>Show</h4>
           <a class="btn selected" data-mode="count">Announcements</a>
           <a class="btn" data-mode="sum">$ Total</a>
-        </div>
+        </div> -->
         <div class="toggle-status">
           <h4>Seat Status</h4>
           <a class="btn selected" data-status="all">All</a>
@@ -80,8 +81,8 @@
             <th data-class="leaderColumn">Leader</th>
             <th>Electorate</th>
             <th data-breakpoints="xs">Description</th>
-            <th data-breakpoints="xs">Amount</th>
-            <th data-breakpoints="xs" >Seat status</th>
+<!--             <th data-breakpoints="xs">Amount</th>
+ -->            <th data-breakpoints="xs" >Seat status</th>
             <th data-sorted="true" data-sort-initial="descending" data-type="date" data-format-string="DD/MM/YYYY">Date</th>
           </tr>
         </thead>

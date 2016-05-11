@@ -5,14 +5,16 @@ export class EventsList {
       this.el = el;
       this.list = d3.select(el).append("ul");
       this.data = data
-      this.dateFormat = d3.time.format("%d/%m/%Y")
+      this.dateFormat = d3.time.format("%Y-%m-%d")
       var self = this;
     }
 
     render(date) {
       var data = this.data.filter((d) => { 
         var date1 = this.dateFormat.parse(d.key)
-        return (date.getDay() === date1.getDay()) && (date.getMonth() === date1.getMonth())
+        if (date && date1) {
+          return (date.getDay() === date1.getDay()) && (date.getMonth() === date1.getMonth())
+        }
       })
       this.list.selectAll("li").remove()
 

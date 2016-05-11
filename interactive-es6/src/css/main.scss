@@ -12,6 +12,7 @@
 @import "tooltip";
 @import "blink";
 @import "sprites";
+@import "car";
 @import "font-awesome";
 @import "footable.min";
 @import "slider";
@@ -89,6 +90,7 @@ section {
   }
   .figure-txt, .category{
     font-weight: bold;
+    white-space: nowrap;
   }
   .category {
     font-style: italic;
@@ -187,7 +189,7 @@ section {
 }
 
 #events {
-  height: 230px;
+  height: 120px;
 }
 
 .party-title {

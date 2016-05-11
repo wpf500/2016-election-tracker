@@ -16,7 +16,7 @@ export function init(el, context, config, mediator) {
     el.innerHTML = mainHTML.replace(/%assetPath%/g, config.assetPath);
     var req;
     req = reqwest({
-      url: 'http://interactive.guim.co.uk/docsdata/1kqqnkbUmWNzzODlpL96aYfhyhfCPZkfmj9kUBaoFj3M.json',
+      url: 'https://interactive.guim.co.uk/docsdata/1FlcOz_QsPE0KolAUB_v1jYVYaKCbh-1VuJcBYwfm86I.json',
       type: 'json',
       crossOrigin: true,
       success: resp => handleData(req.request.getResponseHeader('Last-Modified'), resp)
@@ -26,11 +26,31 @@ export function init(el, context, config, mediator) {
 
 function handleData(date, data) {
     var timestampFormat = d3.time.format("%A %B %d, %H:%M AEST")
-    var dateFormat = d3.time.format("%d/%m/%Y")
+    var dateFormat = d3.time.format("%Y-%m-%d")
     d3.select("#timeStamp").text(timestampFormat(new Date(date)))
 
-    var laborLeader = 'Kevin Rudd'
-    var coalitionLeader = 'Tony Abbott'
+    var rollinGraphic = $("#rollin-graphic")
+    var go = true
+    rollinGraphic.bind("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", () => {
+      rollinGraphic.addClass("transitioned")
+      if (go) { roll() }
+    })
+
+    $(window).on('scroll', roll)
+
+    function roll() {
+      if (rollinGraphic.is(".rollout.transitioned") && $(window).scrollTop() < 20) {
+        rollinGraphic.removeClass("rollout transitioned").addClass("rollin")
+        go = false
+      } else if (rollinGraphic.is(".rollin.transitioned") && $(window).scrollTop() > 20){
+        rollinGraphic.removeClass("rollin transitioned").addClass("rollout")
+        go = false
+      }
+      else if ($(window).scrollTop() < 10) { go = true }
+    }
+
+    var laborLeader = 'Bill Shorten'
+    var coalitionLeader = 'Malcolm Turnbull'
 
     var dataByLeader = d3.nest()
       .key((d) => d.politician)
@@ -45,7 +65,7 @@ function handleData(date, data) {
     var visitsByLeader = d3.nest()
       .key((d) => d.politician)
       .key((d) => d.electorate)
-      .key((d) => d.event)
+      .key((d) => d.date)
       .entries(data.sheets.events)
 
     var dataByCategory = d3.nest()
@@ -117,7 +137,7 @@ function handleData(date, data) {
     dateScale.range([0, dateScale.ticks(d3.time.days, 1).length])
     var slider = el.querySelector('#slider')
     noUiSlider.create(slider, {
-      start: [0],
+      start: dateScale.ticks(d3.time.days, 1).length,
       step: 1,
       animate:true,
       connect: 'lower',
@@ -131,23 +151,26 @@ function handleData(date, data) {
     coalitionEvents.render(dateScale.invert(0))
 
     slider.noUiSlider.on('update', function( value ) {
-      var date = dateControlDisplayFormat(dateScale.invert(value[0]))
+      var dateRaw = dateScale.invert(value[0])
+      var date = dateControlDisplayFormat(dateRaw)
       el.querySelector('#date-control-text').innerHTML = `On ${date}&hellip;`;
-      laborEvents.render(dateScale.invert(value[0]))
-      coalitionEvents.render(dateScale.invert(value[0]))    
+      coalitionMap.renderDateFilter(dateRaw)
+      laborMap.renderDateFilter(dateRaw)
+      laborEvents.render(dateRaw)
+      coalitionEvents.render(dateRaw)    
     });
 
     // toggle buttons for bar graphs
-    var promisesBtn = d3.selectAll(".toggle-mode a")
-      .on("click", function() {
-        var mode = d3.select(this).attr("data-mode")
+    // var promisesBtn = d3.selectAll(".toggle-mode a")
+    //   .on("click", function() {
+    //     var mode = d3.select(this).attr("data-mode")
 
-        laborBar.toggleMode(mode)
-        coalitionBar.toggleMode(mode)
-        d3.selectAll(".toggle-mode a")
-          .classed("selected", false)
-        d3.select(this).classed("selected", true)
-      })
+    //     laborBar.toggleMode(mode)
+    //     coalitionBar.toggleMode(mode)
+    //     d3.selectAll(".toggle-mode a")
+    //       .classed("selected", false)
+    //     d3.select(this).classed("selected", true)
+    //   })
 
     var statusBtn = d3.selectAll(".toggle-status a")
       .on("click", function() {
@@ -182,16 +205,23 @@ function handleData(date, data) {
     }
 
     function summaryText(electorates, announcements, cost, categoryFocus, categoryCost) {
-      var text = `Has visited <span class="figure-txt">${electorates} electorates</span>,` +
-        ` and made <span class="figure-txt">${announcements} announcements</span> ` + 
-        ` with an estimated total cost* of <span class="figure-txt">$${cost}bn</span>. `
+      // text with spending --->
+      // var text = `Has visited <span class="figure-txt">${electorates} electorates</span>,` +
+      //   ` and made <span class="figure-txt">${announcements} announcements</span> ` + 
+      //   ` with an estimated total cost* of <span class="figure-txt">$${cost}bn</span>. 
 
-      if (categoryFocus === categoryCost) {
-        text = text + `His major focus is <span class="category">${categoryFocus}</span>.`
-      } else {
-        text = text + `His major focus is <span class="category">${categoryFocus}</span>` +
-          ` but has committed the most money to <span class="category">${categoryCost}</span>.`
-      }
+      var text = `Has visited <span class="figure-txt">${electorates} electorates</span>,` +
+        ` and made <span class="figure-txt">${announcements} announcements</span>.` 
+
+      text = text + ` His major focus is <span class="category">${categoryFocus}</span>.`
+
+      // if (categoryFocus === categoryCost) {
+      //   text = text + `His major focus is <span class="category">${categoryFocus}</span>.`
+      // } 
+      // else {
+      //   text = text + `His major focus is <span class="category">${categoryFocus}</span>` +
+      //     ` but has committed the most money to <span class="category">${categoryCost}</span>.`
+      // }
       return text
     }
 }

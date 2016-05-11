@@ -23,11 +23,12 @@ body {
 @import "events-list";
 @import "campaign-table";
 @import "tooltip";
+@import "car";
 @import "blink";
 @import "sprites";
+@import "font-awesome";
 @import "footable.min";
 @import "slider";
-
 
 .background {
   background-color: #eee;
@@ -192,7 +193,7 @@ section {
   #slider-container {
     margin: 0 auto;
   }
-  
+
   @media (max-width: 800px) {
     width: 100%;
     box-sizing: border-box
@@ -200,27 +201,45 @@ section {
 }
 
 #events {
-  height: 240px;
+  height: 230px;
 }
 
 .party-title {
   display: none;
   padding: 0;
+  background: none;
 
   &.labor { color: #b51800; }
   &.coalition { color: #005689; }
 }
 
+@media (max-width: 800px) {
+  .party-title {
+    display: inherit;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    width: 100%;
+  }
+
+  #events {
+    height: 120px;
+
+    .events-list .announcements {
+      display: none;
+    }
+  }
+}
+
 @media (min-width: 61.25em) {
-    .text {
+  .text {
     margin-left: 10rem;
     position: relative;
-    }
+  }
 } 
 
 @media (max-width: 38.75rem) {
-    .text {
-      margin-left: 0; 
-    }  
+  .text {
+    margin-left: 0; 
+  }  
 }  
-

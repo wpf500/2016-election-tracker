@@ -25,6 +25,10 @@ export class AUSCartogram {
             coalition: "#005689",
             labor: "#b51800"
         }
+        this.colourScale = d3.interpolate("#fff", this.colour)
+        this.visitScale = d3.scale.sqrt().domain([0, this.maxVisits])
+        this.dateFormat = d3.time.format("%Y-%m-%d")
+
         var self = this;
         this.renderHex()
         this.project()
@@ -67,6 +71,7 @@ export class AUSCartogram {
 
     renderHex() {
         var electorateMap = d3.map(this.data, (d) => d.key)
+        console.log(this.data)
         this.hexFeatures = topojson.feature(hexagonsTopo, hexagonsTopo.objects.hexagons).features
         this.hexFeatures.forEach((h) => {
             var electorate = electorateMap.get(h.properties.electorate)
@@ -97,14 +102,12 @@ export class AUSCartogram {
     resize() {
         this.projection.translate([this.elDimensions.width / 2, this.elDimensions.height/2])
         this.path.projection(this.projection)
-        this.renderHex()
+        this.renderHex(this.data)
         this.project()
     }
 
     render() {
         var self = this;
-        var visitScale = d3.scale.sqrt().domain([0, this.maxVisits])
-        var colourScale = d3.interpolate("#fff", this.colour)
 
         // shared rendering
         var alternate = 0;
@@ -117,11 +120,11 @@ export class AUSCartogram {
                             .strokeWidth(1)
                             .stroke("#fff")
                             .orientation("6/8")
-                            .background(colourScale(visitScale(d.data.values.length)) )
+                            .background(this.colourScale(this.visitScale(d.data.values.length)) )
                         this.svg.call(texture)
                         return texture.url()
                     } else {
-                        return colourScale(visitScale(d.data.values.length))
+                        return this.colourScale(this.visitScale(d.data.values.length))
                     }
                 } else {
                     return "#f6f6f6"
@@ -129,7 +132,8 @@ export class AUSCartogram {
             })
             .on("mouseover", function(d) { 
                 if (d.data) {
-                    self.renderTooltip(d)
+                    console.log(d.data.values[0].values[0].status)
+                    self.renderTooltip(d, d.data.values[0].values[0].status, d.data.values)
                     d3.select(this).attr("stroke", "#333")
                         .attr("stroke-width", 2)
                         .moveToFront()
@@ -143,13 +147,53 @@ export class AUSCartogram {
             })
     }
 
-    renderTooltip(electorate) {
+    renderDateFilter(dateEnd) {
+        var self = this
+
+        this.hexPaths
+            .on("mouseover", function(d) { 
+                if (d.data) {
+                    var data = d.data.values.filter((d) => self.dateFormat.parse(d.key) <= dateEnd)
+
+                    if (data.length > 0) {
+                        self.renderTooltip(d, data[0].values[0].status, data)
+                        d3.select(this).attr("stroke", "#333")
+                            .attr("stroke-width", 2)
+                            .moveToFront()
+                    }
+                }
+            })
+            .transition()
+            .attr('fill', (d) => {
+                if (d.data) {
+                    var data = d.data.values.filter((d) => this.dateFormat.parse(d.key) <= dateEnd)
+                    if (data.length > 0) {
+                        if (data[0].status === "Marginal") {
+                            var texture = textures.lines()
+                                .size(6)
+                                .strokeWidth(1)
+                                .stroke("#fff")
+                                .orientation("6/8")
+                                .background(this.colourScale(this.visitScale(data.length)) )
+                            this.svg.call(texture)
+                            return texture.url()
+                        } else {
+                            return this.colourScale(this.visitScale(data.length))
+                        }
+                    } else { return "#f6f6f6" }
+                } else {
+                    return "#f6f6f6"
+                }
+            })
+    }
+
+    renderTooltip(electorate, status, data) {
         if (!this.tooltip) {
             var tooltip = d3.select(this.el).append("div")
                 .attr("class", "tooltip")
             this.tooltip = document.querySelector(`${this.el} .tooltip`)
         }
-        var msg = `${electorate.properties.electorate}: ${electorate.data.values.length} visits <em>${electorate.data.values[0].values[0].status} seat</em>`
+        var msg = `${electorate.properties.electorate}: ${data.length} visits <em>${status} seat</em>`
 
         this.tooltip.innerHTML =
             '<span class="tooltip__spout"></span>' +
