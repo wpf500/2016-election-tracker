@@ -19,12 +19,12 @@ export function init(el, context, config, mediator) {
       url: 'https://interactive.guim.co.uk/docsdata/1FlcOz_QsPE0KolAUB_v1jYVYaKCbh-1VuJcBYwfm86I.json',
       type: 'json',
       crossOrigin: true,
-      success: resp => handleData(req.request.getResponseHeader('Last-Modified'), resp)
+      success: resp => handleData(el, req.request.getResponseHeader('Last-Modified'), resp)
     });
     iframeMessenger.enableAutoResize()
 }
 
-function handleData(date, data) {
+function handleData(el, date, data) {
     var timestampFormat = d3.time.format("%A %B %d, %H:%M AEST")
     var dateFormat = d3.time.format("%Y-%m-%d")
     d3.select("#timeStamp").text(timestampFormat(new Date(date)))
@@ -39,14 +39,15 @@ function handleData(date, data) {
     $(window).on('scroll', roll)
 
     function roll() {
-      if (rollinGraphic.is(".rollout.transitioned") && $(window).scrollTop() < 20) {
+      var scrollPos = $(window).scrollTop() - $(el).offset().top
+      if (rollinGraphic.is(".rollout.transitioned") && scrollPos < 20) {
         rollinGraphic.removeClass("rollout transitioned").addClass("rollin")
         go = false
-      } else if (rollinGraphic.is(".rollin.transitioned") && $(window).scrollTop() > 20){
+      } else if (rollinGraphic.is(".rollin.transitioned") && scrollPos > 20){
         rollinGraphic.removeClass("rollin transitioned").addClass("rollout")
         go = false
       }
-      else if ($(window).scrollTop() < 10) { go = true }
+      else if (scrollPos < 10) { go = true }
     }
 
     var laborLeader = 'Bill Shorten'

@@ -16,20 +16,22 @@
   }
 }
 
-.cartogram__hex {
-    // transition: all 50ms ease-out;
-/*    fill: #767676;
-*/}
-
 .cartogram__hex--empty {
     fill: #fff;
     stroke: #767676;
     fill-opacity: 1;
 }
 
-.cartogram__hexgroup {
+.cartogram__hexgroup, .key rect {
     stroke: #767676;
     stroke-opacity: 0.8;
     fill-opacity: 1;
 }
 
+.key {
+  text { 
+    font-family:'Guardian Text Sans Web', 'Agate Sans', sans-serif;
+    font-size: 12px;
+    fill: #333;
+  }
+}

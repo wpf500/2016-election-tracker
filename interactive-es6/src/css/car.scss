@@ -4,7 +4,7 @@
   height: 200px;
   position: absolute;
   z-index: 2;
-  margin-top: -170px;
+  margin-top: -180px;
   left: -300px;
   margin-left: 0;  
 
@@ -20,6 +20,17 @@
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in;
+  }
+
+  @media (max-width: 800px) {
+    left: initial;
+    margin-top: -140px;
+    background-size: 80%;
+
+    &.rollin, &.rollout {
+      animation-name: none;
+      animation-delay: 0s;
+    }
   }
 }
 

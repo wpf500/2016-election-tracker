@@ -29,8 +29,13 @@ header.page-header {
       font-size: 18px;
       z-index: 10;
       position: relative;
+      max-width: 600px;
 
       p { padding-top: 0; }
+  }
+  .int-byline {
+    color: #767676;
+    font-weight: 600;
   }
   .timestampSocial {
     font-size:0.8rem;

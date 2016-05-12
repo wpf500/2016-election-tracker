@@ -21,15 +21,12 @@ export class AUSCartogram {
         this.data = data
         this.maxVisits = maxVisits
         this.colour = colour
-        this.colours = {
-            coalition: "#005689",
-            labor: "#b51800"
-        }
         this.colourScale = d3.interpolate("#fff", this.colour)
         this.visitScale = d3.scale.sqrt().domain([0, this.maxVisits])
         this.dateFormat = d3.time.format("%Y-%m-%d")
 
         var self = this;
+        this.drawKey()
         this.renderHex()
         this.project()
 
@@ -69,9 +66,29 @@ export class AUSCartogram {
         }
     }
 
+    drawKey() {
+        var key = this.svg.append("g").attr("class", "key")
+            .attr("transform", `translate(${this.elDimensions.width - 150},10)`)
+        var texture = textures.lines()
+            .size(6)
+            .strokeWidth(1)
+            .stroke("#fff")
+            .orientation("6/8")
+            .background(this.colour)
+        this.svg.call(texture)
+        key.append("rect")
+            .attr("width", 12)
+            .attr("height", 12)
+            .attr("fill", texture.url())
+        key.append("text")
+            .text("Marginal seat")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("alignment-baseline", "baseline")
+    }
+
     renderHex() {
         var electorateMap = d3.map(this.data, (d) => d.key)
-        console.log(this.data)
         this.hexFeatures = topojson.feature(hexagonsTopo, hexagonsTopo.objects.hexagons).features
         this.hexFeatures.forEach((h) => {
             var electorate = electorateMap.get(h.properties.electorate)
@@ -87,7 +104,6 @@ export class AUSCartogram {
         this.render();
     }
     mapCoordsToScreenCoords(coords) {
-        console.log(coords)
         return [0,1].map(i => (coords[i] * this.scale[i]) + this.translate[i]);
     }
     get elDimensions() { 
@@ -132,7 +148,6 @@ export class AUSCartogram {
             })
             .on("mouseover", function(d) { 
                 if (d.data) {
-                    console.log(d.data.values[0].values[0].status)
                     self.renderTooltip(d, d.data.values[0].values[0].status, d.data.values)
                     d3.select(this).attr("stroke", "#333")
                         .attr("stroke-width", 2)
@@ -151,6 +166,7 @@ export class AUSCartogram {
         var self = this
 
         this.hexPaths
+            .attr("fill", (d) => "#f6f6f6")
             .on("mouseover", function(d) { 
                 if (d.data) {
                     var data = d.data.values.filter((d) => self.dateFormat.parse(d.key) <= dateEnd)
@@ -168,7 +184,8 @@ export class AUSCartogram {
                 if (d.data) {
                     var data = d.data.values.filter((d) => this.dateFormat.parse(d.key) <= dateEnd)
                     if (data.length > 0) {
-                        if (data[0].status === "Marginal") {
+
+                        if (data[0].values[0].status === "Marginal") {
                             var texture = textures.lines()
                                 .size(6)
                                 .strokeWidth(1)

@@ -103,6 +103,7 @@ section {
   }
   .figure-txt, .category{
     font-weight: bold;
+    white-space: nowrap;
   }
   .category {
     font-style: italic;
@@ -201,7 +202,7 @@ section {
 }
 
 #events {
-  height: 230px;
+  height: 120px;
 }
 
 .party-title {
@@ -242,4 +243,4 @@ section {
   .text {
     margin-left: 0; 
   }  
-}  
+} 
