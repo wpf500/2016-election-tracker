@@ -33,7 +33,7 @@
     position: absolute;
     z-index: 0;
     top: 0;
-    bottom: 0;
+    bottom: 20px;
     left: 50%;
     border-left: 1px solid #dcdcdc;
   }
@@ -205,7 +205,7 @@ section {
   .party-title {
     display: inherit;
     position: absolute;
-    top: 0;
+    top: -20px;
     text-align: center;
     width: 100%;
   }

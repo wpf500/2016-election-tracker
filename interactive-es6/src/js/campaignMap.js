@@ -67,7 +67,7 @@ export class AUSCartogram {
     }
 
     drawKey() {
-        var key = this.svg.append("g").attr("class", "key")
+        this.key = this.svg.append("g").attr("class", "key")
             .attr("transform", `translate(${this.elDimensions.width - 150},10)`)
         var texture = textures.lines()
             .size(6)
@@ -76,15 +76,14 @@ export class AUSCartogram {
             .orientation("6/8")
             .background(this.colour)
         this.svg.call(texture)
-        key.append("rect")
+        this.key.append("rect")
             .attr("width", 12)
             .attr("height", 12)
             .attr("fill", texture.url())
-        key.append("text")
+        this.key.append("text")
             .text("Marginal seat")
             .attr("x", 20)
-            .attr("y", 12)
-            .attr("alignment-baseline", "baseline")
+            .attr("y", 6)
     }
 
     renderHex() {
@@ -119,6 +118,7 @@ export class AUSCartogram {
         this.projection.translate([this.elDimensions.width / 2, this.elDimensions.height/2])
         this.path.projection(this.projection)
         this.renderHex(this.data)
+        this.key.attr("transform", `translate(${this.elDimensions.width - 150},10)`)
         this.project()
     }
 
@@ -165,8 +165,10 @@ export class AUSCartogram {
     renderDateFilter(dateEnd) {
         var self = this
 
+        this.hexPaths.filter((d) => d.data && d.data.values[0].values[0].status === "Marginal")
+            .attr("fill", "#f6f6f6")
+
         this.hexPaths
-            .attr("fill", (d) => "#f6f6f6")
             .on("mouseover", function(d) { 
                 if (d.data) {
                     var data = d.data.values.filter((d) => self.dateFormat.parse(d.key) <= dateEnd)

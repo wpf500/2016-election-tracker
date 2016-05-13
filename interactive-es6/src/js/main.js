@@ -29,25 +29,45 @@ function handleData(el, date, data) {
     var dateFormat = d3.time.format("%Y-%m-%d")
     d3.select("#timeStamp").text(timestampFormat(new Date(date)))
 
-    var rollinGraphic = $("#rollin-graphic")
-    var go = true
-    rollinGraphic.bind("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", () => {
+    if( el.getBoundingClientRect().width > 480) {
+      var rollinGraphic = $("#rollin-graphic")
+      rollinGraphic.removeClass("preload").addClass("rollin")
+      var go = true
+      rollinGraphic.bind("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", () => {
       rollinGraphic.addClass("transitioned")
-      if (go) { roll() }
-    })
+        if (go) { roll() }
+      })
+  
+      $(window).on('scroll', roll)
 
-    $(window).on('scroll', roll)
+      var justExecuted = false;
 
-    function roll() {
-      var scrollPos = $(window).scrollTop() - $(el).offset().top
-      if (rollinGraphic.is(".rollout.transitioned") && scrollPos < 20) {
-        rollinGraphic.removeClass("rollout transitioned").addClass("rollin")
-        go = false
-      } else if (rollinGraphic.is(".rollin.transitioned") && scrollPos > 20){
-        rollinGraphic.removeClass("rollin transitioned").addClass("rollout")
-        go = false
+      function roll() {
+        if (justExecuted) {
+          return
+        }
+
+        var scrollPos = $(window).scrollTop() - $(el).offset().top
+        if (rollinGraphic.is(".rollout.transitioned") && scrollPos < 20) {
+          rollinGraphic.removeClass("rollout transitioned").addClass("rollin")
+          go = false
+          justExecuted = false;
+          return
+        } else if (rollinGraphic.is(".rollin.transitioned") && scrollPos > 20){
+          rollinGraphic.removeClass("rollin transitioned").addClass("rollout")
+          go = false
+          justExecuted = true
+        } else if (scrollPos < 10) { 
+          go = true 
+          justExecuted = true;
+        } else {
+          justExecuted = true
+        }
+        
+        setTimeout(function() {
+          justExecuted = false;
+        }, 50);
       }
-      else if (scrollPos < 10) { go = true }
     }
 
     var laborLeader = 'Bill Shorten'
@@ -143,7 +163,7 @@ function handleData(el, date, data) {
       animate:true,
       connect: 'lower',
       range: {
-          'min': 0,
+          'min': 1,
           'max': dateScale.ticks(d3.time.days, 1).length
       }
     })
@@ -152,6 +172,7 @@ function handleData(el, date, data) {
     coalitionEvents.render(dateScale.invert(0))
 
     slider.noUiSlider.on('update', function( value ) {
+
       var dateRaw = dateScale.invert(value[0])
       var date = dateControlDisplayFormat(dateRaw)
       el.querySelector('#date-control-text').innerHTML = `On ${date}&hellip;`;

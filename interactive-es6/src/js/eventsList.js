@@ -28,7 +28,7 @@ export class EventsList {
         .attr("class", "electorate")
         .text((d) => d.values[0].values[0].electorate)
 
-      event = li.selectAll("ul.announcements")
+      var event = li.selectAll("ul.announcements")
         .data((d) => d.values)
         .enter()
         .append("ul")

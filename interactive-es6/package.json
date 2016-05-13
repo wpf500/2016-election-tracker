@@ -28,13 +28,11 @@
       "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
       "jquery": "npm:jquery@^2.2.1",
       "json": "github:systemjs/plugin-json@^0.1.0",
-      "moment": "github:moment/moment@2.12.0",
+      "moment": "github:moment/moment@2.13.0",
       "reqwest": "github:ded/reqwest@^1.1.5",
       "riccardoscalco/textures": "github:riccardoscalco/textures@master",
-      "scrollmagic": "npm:scrollmagic@^2.0.5",
       "text": "github:systemjs/plugin-text@^0.0.2",
-      "topojson": "npm:topojson@^1.6.24",
-      "velocity-animate": "npm:velocity-animate@^1.2.3"
+      "topojson": "npm:topojson@^1.6.24"
     },
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.91",
