@@ -15,6 +15,7 @@ export class TableSortable {
           var tr = $("<tr></tr>").appendTo(tbody)
           $(`<td>${d.politician}</td>`).appendTo(tr).addClass("politician").addClass(party + "-row")
           $(`<td>${d.electorate}</td>`).appendTo(tr)
+          $(`<td>${d.event}</td>`).appendTo(tr)          
           $(`<td>${d.announcement}</td>`).appendTo(tr)
           // $(`<td>${amtFormat(d['dollars-announced'])}</td>`).appendTo(tr).attr("data-sort-value", d['dollars-announced'])
           $(`<td>${d.status}</td>`).appendTo(tr).addClass("status")

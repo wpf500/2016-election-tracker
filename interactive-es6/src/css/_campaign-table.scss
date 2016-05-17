@@ -1,5 +1,5 @@
 #announcements-detail {
-  table {
+  table.footable {
     width:100%;
     max-width: 1300px;
     text-align: left;
@@ -34,6 +34,13 @@
 
     tr:nth-child(odd)>td {
       background-color: #ececec;
+
+    }
+
+    table.footable-details {
+      tr:nth-child(odd)>td {
+        background-color: inherit;
+      }
     }
 
     span.fooicon{

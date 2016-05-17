@@ -10,14 +10,14 @@ define([], function() {
     }
 
     return {
-        boot: function(el, context, config, mediator) {
+        boot: function(el) {
+
+            var config = {
+                assetPath: '<%= assetPath %>'
+            };
 
             // Loading message while we fetch JS / CSS
-            el.innerHTML = '<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">Loading…</div>';
-
-            config = {
-                'assetPath': '<%= assetPath %>'
-            };
+            el.innerHTML = '<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">Loading bleh <%= assetPath %>…</div>';
 
             // Load CSS asynchronously
             window.setTimeout(function() {
@@ -26,8 +26,9 @@ define([], function() {
 
             // Load JS and init
             require(['<%= assetPath %>/main.js'], function(main) {
-                main.init(el, context, config, mediator);
-            }, function(err) { console.error('Error loading boot.', err); });
+                el.innerHTML = '<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">before main</div>'
+                main.default.init(el, config);
+            }, function(err) { el.innerHTML = `<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">${err}</div>`});
         }
     };
 });

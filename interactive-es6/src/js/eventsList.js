@@ -13,33 +13,35 @@ export class EventsList {
       var data = this.data.filter((d) => { 
         var date1 = this.dateFormat.parse(d.key)
         if (date && date1) {
-          return (date.getDay() === date1.getDay()) && (date.getMonth() === date1.getMonth())
+          return (date.getDate() === date1.getDate()) && (date.getMonth() === date1.getMonth())
         }
+        else { return false }
       })
       this.list.selectAll("li").remove()
 
-      var li = this.list.selectAll("li.event")
-        .data(data)
+      var li = this.list.selectAll("li.electorate")
+        .data(data[0].values)
         .enter()
         .append("li")
-        .attr("class", "event")
+        .attr("class", "electorate")
 
       li.append("h4")
         .attr("class", "electorate")
-        .text((d) => d.values[0].values[0].electorate)
+        .text((d) => d.key)
 
-      var event = li.selectAll("ul.announcements")
+      // li.append("p")
+      //   .attr("class", "summary")
+      //   .text((d) => d.values[0].values[0].summary)
+
+      var event = li.selectAll("ul.events")
         .data((d) => d.values)
         .enter()
         .append("ul")
-        .attr("class", "announcements")
+        .attr("class", "events")
 
-      event.selectAll("li.announcement")
-        .data((d) => d.values)
-        .enter()
-        .append("li")
-        .attr("class", "announcement")
-        .text((d) => d.announcement)
+      event.append("li")
+        .attr("class", "event")
+        .text((d) => d.values[0].summary)
 
     }
 }

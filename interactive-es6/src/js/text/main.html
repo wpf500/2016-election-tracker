@@ -3,7 +3,8 @@
     <h1>Election campaign tracker: where have the candidates been and what have they promised?</h1>
     <div id="rollin-graphic" class="preload"></div>
     <div class="col50">
-      <p class="summaryText headerText">We're logging every campaign appearance from Bill Shorten and Malcolm Turnbull since the start of the election campaign. Here you can see where they've been the most, what they did there, and if they're visiting more marginal than safe seats.</p>
+      <p class="summaryText headerText">We're logging every campaign appearance from Bill Shorten and Malcolm Turnbull since the start of the election campaign. Here you can see where they've been the most, what they did there, and if they're visiting more marginal than safe seats. 
+      Have we missed any events? <a href="https://docs.google.com/forms/d/14T4wPZC2yRl1jfSs_P1C10CfWmo_pSUk-URwXO31AP4/viewform" target="_blank">Let us know</a></p>
       <p class="int-byline"><a href="https://www.theguardian.com/profile/ri-liu">Ri Liu</a>, <a href="https://www.theguardian.com/profile/nick-evershed">Nick Evershed</a>, <a href="https://www.theguardian.com/profile/anna-livsey">Anna Livsey</a> and <a href="https://www.theguardian.com/profile/david-constable">David Constable</a></p>
       <div class="timestampSocial">Last update <span id="timeStamp"></span></div>
       <div class="btns-share"><button class="btn-tt" data-source="twitter"></button> <button class="btn-fb" data-source="facebook"></button></div>
@@ -31,7 +32,7 @@
     </section>
 
     <section id="promises">
-      <h2>Promises by category</h2>
+      <h2>Announcements by category</h2>
       <div class="controls">
 <!--         <div class="toggle-mode">
           <h4>Show</h4>
@@ -75,12 +76,13 @@
     </section>
 
     <section id="announcements-detail">
-      <h2>The full list of announcements</h2>
+      <h2>The full list of campaign events</h2>
       <table id="announcements-table" class="table" data-sorting="true">
         <thead> 
           <tr>
             <th data-class="leaderColumn">Leader</th>
             <th>Electorate</th>
+            <th data-breakpoints="xs">Event</th>
             <th data-breakpoints="xs">Description</th>
 <!--             <th data-breakpoints="xs">Amount</th>
  -->            <th data-breakpoints="xs" >Seat status</th>

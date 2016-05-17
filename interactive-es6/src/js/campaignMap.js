@@ -165,8 +165,8 @@ export class AUSCartogram {
     renderDateFilter(dateEnd) {
         var self = this
 
-        this.hexPaths.filter((d) => d.data && d.data.values[0].values[0].status === "Marginal")
-            .attr("fill", "#f6f6f6")
+        // this.hexPaths.filter((d) => d.data && d.data.values[0].values[0].status === "Marginal")
+        //     .attr("fill", "#f6f6f6")
 
         this.hexPaths
             .on("mouseover", function(d) { 
@@ -181,7 +181,7 @@ export class AUSCartogram {
                     }
                 }
             })
-            .transition()
+            // .transition()
             .attr('fill', (d) => {
                 if (d.data) {
                     var data = d.data.values.filter((d) => this.dateFormat.parse(d.key) <= dateEnd)

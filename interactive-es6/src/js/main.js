@@ -2,6 +2,7 @@ import reqwest from 'reqwest'
 import mainHTML from './text/main.html!text'
 import d3 from 'd3'
 import moment from 'moment'
+import jquery from 'jquery'
 import { AUSCartogram } from './campaignMap'
 import { BarGraph } from './barGraph'
 import { TableSortable } from './tableSortable'
@@ -12,7 +13,7 @@ import noUiSlider from './vendor/nouislider.min'
 import campaignData from './data/events-categorised.json!json'
 import iframeMessenger from 'guardian/iframe-messenger'
 
-export function init(el, context, config, mediator) {
+export function init(el, config) {
     el.innerHTML = mainHTML.replace(/%assetPath%/g, config.assetPath);
     var req;
     req = reqwest({
@@ -28,7 +29,8 @@ function handleData(el, date, data) {
     var timestampFormat = d3.time.format("%A %B %d, %H:%M AEST")
     var dateFormat = d3.time.format("%Y-%m-%d")
     d3.select("#timeStamp").text(timestampFormat(new Date(date)))
-
+    shareInteractive()
+    
     if( el.getBoundingClientRect().width > 480) {
       var rollinGraphic = $("#rollin-graphic")
       rollinGraphic.removeClass("preload").addClass("rollin")
@@ -75,11 +77,12 @@ function handleData(el, date, data) {
 
     var dataByLeader = d3.nest()
       .key((d) => d.politician)
-      .entries(data.sheets.events)
+      .entries(data.sheets.events.filter((d) => !(d.category === "general")))
 
     var eventsByLeader = d3.nest()
       .key((d) => d.politician)
-      .key((d) => d.date)      
+      .key((d) => d.date)
+      .key((d) => d.electorate)      
       .key((d) => d.event)      
       .entries(data.sheets.events)
 
@@ -168,9 +171,6 @@ function handleData(el, date, data) {
       }
     })
 
-    laborEvents.render(dateScale.invert(0))
-    coalitionEvents.render(dateScale.invert(0))
-
     slider.noUiSlider.on('update', function( value ) {
 
       var dateRaw = dateScale.invert(value[0])
@@ -219,6 +219,57 @@ function handleData(el, date, data) {
       }
     })
 
+    function shareInteractive(){
+      var shareButtons = document.querySelectorAll('.btns-share button');
+      
+      for (var i = 0; i < shareButtons.length; i++) {
+        shareButtons[i].addEventListener('click',openShareWindow);
+      };
+
+      function openShareWindow(e){
+        var shareWindow = "";
+        var twitterBaseUrl = "https://twitter.com/intent/tweet?text=";
+        var facebookBaseUrl = "https://www.facebook.com/dialog/feed?display=popup&app_id=741666719251986&link=";
+        var network = e.currentTarget.getAttribute('data-source'); 
+        var defaultSharemessage = "The Guardian election campaign tracker ";
+        var sharemessage = "Election campaign tracker: where have the candidates been and what have they promised? ";
+        var shareImage = "";
+        var guardianUrl = "http://theguardian.com/au";
+        guardianUrl = getUrl();
+
+        if(network === "twitter"){
+            shareWindow = 
+                twitterBaseUrl + 
+                encodeURIComponent(sharemessage) + 
+                "%20" + 
+                (encodeURIComponent(guardianUrl));
+            
+        }else if(network === "facebook"){
+            shareWindow = 
+                facebookBaseUrl + 
+                encodeURIComponent(guardianUrl) + 
+                "&picture=" + 
+                encodeURIComponent(shareImage) + 
+                "&redirect_uri=http://www.theguardian.com";
+        }
+        window.open(shareWindow, network + "share", "width=640,height=320");
+      }
+
+      function getUrl() {
+        var url = "http://www.theguardian.com";
+        if ( window.self !== window.top ) {
+          iframeMessenger.getLocation(function(location) {
+          url = location.href;
+        });
+        }
+        else {
+          url = window.location.href;
+        }
+        return url;
+      }
+
+    }
+
     function resize() {
       coalitionMap.resize()
       laborMap.resize()
@@ -247,3 +298,5 @@ function handleData(el, date, data) {
       return text
     }
 }
+
+export default {init: init}

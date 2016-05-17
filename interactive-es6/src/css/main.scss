@@ -189,7 +189,7 @@ section {
 }
 
 #events {
-  height: 120px;
+  height: 160px;
 }
 
 .party-title {
@@ -211,9 +211,9 @@ section {
   }
 
   #events {
-    height: 120px;
+    height: 80px;
 
-    .events-list .announcements {
+    .events-list .events {
       display: none;
     }
   }
