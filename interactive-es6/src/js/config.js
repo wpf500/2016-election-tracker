@@ -1,7 +1,13 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
-  transpiler: "traceur",
+  transpiler: "babel",
+  babelOptions: {
+    "optional": [
+      "runtime",
+      "optimisation.modules.system"
+    ]
+  },
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
@@ -13,6 +19,9 @@ System.config({
   },
 
   map: {
+    "babel": "npm:babel-core@5.8.38",
+    "babel-runtime": "npm:babel-runtime@5.8.38",
+    "core-js": "npm:core-js@1.2.6",
     "d3": "npm:d3@3.5.17",
     "d3-queue": "npm:d3-queue@2.0.3",
     "fooTable": "github:fooplugins/FooTable@2.0.3",
@@ -25,8 +34,6 @@ System.config({
     "scrollmagic": "npm:scrollmagic@2.0.5",
     "text": "github:systemjs/plugin-text@0.0.2",
     "topojson": "npm:topojson@1.6.26",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.93",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.93",
     "velocity-animate": "npm:velocity-animate@1.2.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -75,6 +82,9 @@ System.config({
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
     },
+    "npm:babel-runtime@5.8.38": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:brfs@1.4.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -102,6 +112,12 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14",
       "typedarray": "npm:typedarray@0.0.6"
+    },
+    "npm:core-js@1.2.6": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:core-util-is@1.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
