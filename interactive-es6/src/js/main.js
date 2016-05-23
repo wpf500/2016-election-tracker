@@ -298,5 +298,3 @@ function handleData(el, date, data) {
       return text
     }
 }
-
-export default {init: init}

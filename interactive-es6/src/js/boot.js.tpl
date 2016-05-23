@@ -27,8 +27,8 @@ define([], function() {
             // Load JS and init
             require(['<%= assetPath %>/main.js'], function(main) {
                 el.innerHTML = '<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">before main</div>'
-                main.default.init(el, config);
-            }, function(err) { el.innerHTML = `<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">${err}</div>`});
+                main.init(el, config);
+            }, function(err) { el.innerHTML = '<div style="font-size: 24px; text-align: center; padding: 72px 0; font-family: \'Guardian Egyptian Web\',Georgia,serif;">' + err + '</div>'});
         }
     };
 });
